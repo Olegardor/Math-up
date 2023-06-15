@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Mash-up</string>
+    <string name="choose_city">Выберите город:</string>
+    <string name="enter_number">Введите сумму:</string>
+    <string name="currensy_in">Выберите валюту для перевода:</string>
+    <string name="currensy_from">Выберите валюту, в которую переводить:</string>
+    <string name="conversion">Корвертировать</string>
+    <string-array name="cities">
+        <item>Brest</item>
+        <item>Minsk</item>
+        <item>Moscow</item>
+        <item>Grodno</item>
+    </string-array>
+    <string-array name="currency">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>BYN</item>
+        <item>RUB</item>
+    </string-array>
+
+
+</resources>
