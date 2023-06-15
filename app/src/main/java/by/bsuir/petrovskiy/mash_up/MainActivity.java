@@ -117,6 +117,4 @@ public class MainActivity extends AppCompatActivity {
             throw new IOException("Invalid response format");
         }
     }
-
-
 }
