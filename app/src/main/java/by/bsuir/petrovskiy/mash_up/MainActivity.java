@@ -62,9 +62,28 @@ public class MainActivity extends AppCompatActivity {
         button_conversion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CurrencyAsyncTask currencyAsyncTask = new CurrencyAsyncTask(editText_number, spinner_currensy_from, spinner_currensy_in, getApplicationContext(), textView_currency_conversion);
-                currencyAsyncTask.execute();
+                if (!TextUtils.isEmpty(editText_number.getText().toString())) {
+                    CurrencyAsyncTask currencyAsyncTask = new CurrencyAsyncTask(editText_number, spinner_currensy_from, spinner_currensy_in, getApplicationContext(), textView_currency_conversion);
+                    currencyAsyncTask.execute();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Введите корректное значение суммы!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("textView_info_weather", textView_info_weather.getText().toString());
+        outState.putString("textView_currency_conversion", textView_currency_conversion.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        textView_info_weather.setText(savedInstanceState.getString("textView_info_weather"));
+        textView_currency_conversion.setText(savedInstanceState.getString("textView_currency_conversion"));
     }
 }

@@ -35,56 +35,52 @@ public class CurrencyAsyncTask extends AsyncTask <Void, Void, String> {
 
     protected String doInBackground (Void... voids) {
         String checkNull = editText_number.getText().toString();
-        if (!TextUtils.isEmpty(checkNull)) {
-            try {
-                Double amount = Double.valueOf(checkNull);
-                String fromCurrency = spinner_currensy_from.getSelectedItem().toString();
-                String inCurrency = spinner_currensy_in.getSelectedItem().toString();
+        try {
+            Double amount = Double.valueOf(checkNull);
+            String fromCurrency = spinner_currensy_from.getSelectedItem().toString();
+            String inCurrency = spinner_currensy_in.getSelectedItem().toString();
 
-                String apiKey = "a0WLmf670pKhvicZch2AviUZ6eJnH97L";
-                String url = "https://api.apilayer.com/exchangerates_data/convert?from=" + fromCurrency + "&to=" + inCurrency + "&amount=1";
-                URLConnection connection = new URL(url).openConnection();
-                connection.setRequestProperty("apikey", apiKey);
-                connection.connect();
+            String apiKey = "a0WLmf670pKhvicZch2AviUZ6eJnH97L";
+            String url = "https://api.apilayer.com/exchangerates_data/convert?from=" + fromCurrency + "&to=" + inCurrency + "&amount=1";
+            URLConnection connection = new URL(url).openConnection();
+            connection.setRequestProperty("apikey", apiKey);
+            connection.connect();
 
-                StringBuilder responseBuilder = new StringBuilder();
+            StringBuilder responseBuilder = new StringBuilder();
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    responseBuilder.append(line);
-                }
-                reader.close();
-
-                String response = responseBuilder.toString();
-                Log.d("CurrencyResponce", response);
-
-
-                JSONObject jsonObject = new JSONObject(response);
-                double exchangeRate = jsonObject.getDouble("result");
-
-                double convertedAmount = Math.floor(amount * exchangeRate * 100.0) / 100.00;
-                String resultText = amount + " " + fromCurrency + " = " + convertedAmount + " " + inCurrency;
-                Log.d("CurrencyResultText", resultText);
-                return resultText;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                responseBuilder.append(line);
             }
-            catch (IOException e) {
-                Log.e("CurrencyOIex", e.getMessage(), e);
-            }
-            catch (JSONException j) {
-                Log.e("CurrencyJSONex", j.getMessage(), j);
-            }
-            catch (Exception ex) {
-                Log.e("CurrencyEx", ex.getMessage(), ex);
-            }
+            reader.close();
+
+            String response = responseBuilder.toString();
+            Log.d("CurrencyResponce", response);
+
+            JSONObject jsonObject = new JSONObject(response);
+            double exchangeRate = jsonObject.getDouble("result");
+
+            double convertedAmount = Math.floor(amount * exchangeRate * 100.0) / 100.00;
+            String resultText = amount + " " + fromCurrency + " = " + convertedAmount + " " + inCurrency;
+            Log.d("CurrencyResultText", resultText);
+            return resultText;
         }
-        else {
-            Toast.makeText(context, "Введите корректное значение суммы!", Toast.LENGTH_SHORT).show();
+        catch (IOException e) {
+            Log.e("CurrencyOIex", e.getMessage(), e);
+        }
+        catch (JSONException j) {
+            Log.e("CurrencyJSONex", j.getMessage(), j);
+        }
+        catch (Exception ex) {
+            Log.e("CurrencyEx", ex.getMessage(), ex);
         }
         return null;
     }
 
     protected void onPostExecute (String resultText) {
-        textView_currency_conversion.setText(resultText);
+        if (resultText != null) {
+            textView_currency_conversion.setText(resultText);
+        }
     }
 }
