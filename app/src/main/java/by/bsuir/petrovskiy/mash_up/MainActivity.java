@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         textView_currency_conversion = (TextView) findViewById(R.id.textView_currency_conversion);
         editText_number = (EditText) findViewById(R.id.editText_number);
         spinner_cities = (Spinner) findViewById(R.id.spinner_cities);
-        spinner_currensy_from = (Spinner) findViewById(R.id.spinner_currensy_in);
-        spinner_currensy_in = (Spinner) findViewById(R.id.spinner_currensy_from);
+        spinner_currensy_from = (Spinner) findViewById(R.id.spinner_currensy_from);
+        spinner_currensy_in = (Spinner) findViewById(R.id.spinner_currensy_in);
         button_conversion = (Button) findViewById(R.id.button_conversion);
 
         spinner_cities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

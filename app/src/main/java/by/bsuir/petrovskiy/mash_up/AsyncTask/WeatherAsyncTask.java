@@ -38,6 +38,7 @@ public class WeatherAsyncTask extends AsyncTask<Void, Void, String> {
             Request request = new Request.Builder()
                     .url(url)
                     .build();
+            Log.d("CurrencyWeatherRequest", request.toString());
 
             Response response = client.newCall(request).execute();
             String responseString = response.body().string();

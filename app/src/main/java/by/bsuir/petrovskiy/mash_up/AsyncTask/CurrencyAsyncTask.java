@@ -47,15 +47,23 @@ public class CurrencyAsyncTask extends AsyncTask <Void, Void, String> {
                 connection.setRequestProperty("apikey", apiKey);
                 connection.connect();
 
+                StringBuilder responseBuilder = new StringBuilder();
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String response = reader.readLine();
-                Log.d("CurrencyResponce", response);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line);
+                }
                 reader.close();
+
+                String response = responseBuilder.toString();
+                Log.d("CurrencyResponce", response);
+
 
                 JSONObject jsonObject = new JSONObject(response);
                 double exchangeRate = jsonObject.getDouble("result");
 
-                double convertedAmount = amount * exchangeRate;
+                double convertedAmount = Math.floor(amount * exchangeRate * 100.0) / 100.00;
                 String resultText = amount + " " + fromCurrency + " = " + convertedAmount + " " + inCurrency;
                 Log.d("CurrencyResultText", resultText);
                 return resultText;
