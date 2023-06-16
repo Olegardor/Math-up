@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import by.bsuir.petrovskiy.mash_up.AsyncTask.CurrencyAsyncTask;
 import by.bsuir.petrovskiy.mash_up.AsyncTask.WeatherAsyncTask;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         spinner_cities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask(textView_info_weather);
+                WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask(textView_info_weather, spinner_cities);
                 weatherAsyncTask.execute();
 
             }
@@ -61,16 +62,8 @@ public class MainActivity extends AppCompatActivity {
         button_conversion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String checkNull = editText_number.getText().toString();
-                if (!TextUtils.isEmpty(checkNull)) {
-                    Double amount = Double.valueOf(checkNull);
-                    String fromCurrensy = spinner_currensy_from.getSelectedItem().toString();
-                    String inCurrensy = spinner_currensy_in.getSelectedItem().toString();
-                    //fetchExchangeRate(amount, fromCurrensy, inCurrensy);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Введите корректное значение суммы!", Toast.LENGTH_SHORT).show();
-                }
+                CurrencyAsyncTask currencyAsyncTask = new CurrencyAsyncTask(editText_number, spinner_currensy_from, spinner_currensy_in, getApplicationContext(), textView_currency_conversion);
+                currencyAsyncTask.execute();
             }
         });
     }

@@ -3,6 +3,7 @@ package by.bsuir.petrovskiy.mash_up.AsyncTask;
 import android.os.AsyncTask;
 import android.text.PrecomputedText;
 import android.util.Log;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.loader.content.AsyncTaskLoader;
@@ -19,16 +20,18 @@ import okhttp3.Response;
 
 
 
-public class WeatherAsyncTask extends AsyncTask<String, Void, String> {
+public class WeatherAsyncTask extends AsyncTask<Void, Void, String> {
     String cities;
     TextView textView_info_weather;
+    Spinner spinner_cities;
 
-    public WeatherAsyncTask(TextView textView_info_weather) {
+    public WeatherAsyncTask(TextView textView_info_weather, Spinner spinner_cities) {
         this.textView_info_weather = textView_info_weather;
+        this.spinner_cities = spinner_cities;
     }
-    protected String doInBackground (String... strings) {
+    protected String doInBackground (Void... voids) {
         try {
-            cities = strings[0];
+            cities = spinner_cities.getSelectedItem().toString();
             String apiKey = "842874aa24b6923e2ecd2fe43eb32331";
             String url = "https://api.openweathermap.org/data/2.5/weather?q=" + cities + "&appid=" + apiKey + "&units=metric";
             OkHttpClient client = new OkHttpClient();
@@ -64,6 +67,9 @@ public class WeatherAsyncTask extends AsyncTask<String, Void, String> {
         }
         catch (JSONException j) {
             Log.e("WeatherJSONex", j.getMessage(), j);
+        }
+        catch (Exception ex) {
+            Log.e("WeatherEx", ex.getMessage(), ex);
         }
         return null;
     }
