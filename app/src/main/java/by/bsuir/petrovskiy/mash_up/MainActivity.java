@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import by.bsuir.petrovskiy.mash_up.AsyncTask.WeatherAsyncTask;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -48,14 +49,13 @@ public class MainActivity extends AppCompatActivity {
         spinner_cities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String cities = spinner_cities.getSelectedItem().toString();
-                fetchWeather(cities);
+                WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask(textView_info_weather);
+                weatherAsyncTask.execute();
+
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
         button_conversion.setOnClickListener(new View.OnClickListener() {
@@ -73,48 +73,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public void fetchWeather (String cities) {
-        try {
-            String infoWeather = fetchWeatherFromAPI(cities);
-
-            textView_info_weather.setText("Погода в " + cities + ": \n" + infoWeather);
-        }
-        catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Ошибка при выполнении запроса! " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public String fetchWeatherFromAPI (String cities) throws IOException, JSONException {
-        String apiKey = "842874aa24b6923e2ecd2fe43eb32331";
-        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + cities + "&appid=" + apiKey + "&units=metric";
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-            .url(url)
-            .build();
-
-        Response response = client.newCall(request).execute();
-        String responseString = response.body().string();
-        JSONObject jsonObject = new JSONObject(responseString);
-
-        if (jsonObject.has("main")) {
-            JSONObject mainData = jsonObject.getJSONObject("main");
-            double temperature = mainData.getDouble("temp");
-            double temp_min = mainData.getDouble("temp_min");
-            double temp_max = mainData.getDouble("temp_max");
-            double pressure = mainData.getDouble("pressure");
-            double humidity = mainData.getDouble("humidity");
-
-            JSONArray weatherArray = jsonObject.getJSONArray("weather");
-            JSONObject weatherObject = weatherArray.getJSONObject(0);
-            String weatherDescription = weatherObject.getString("description");
-
-            String weatherData = "Температура: " + temperature + " °C\nОписание: " + weatherDescription + "\nТемпература min: " + temp_min + " °C\nТемпература max: " + temp_max + " °C\nДавление: " + pressure + " mm\n" +
-                    "Влажность: " + humidity + " %";
-            return weatherData;
-        } else {
-            throw new IOException("Invalid response format");
-        }
     }
 }
